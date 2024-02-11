@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p id="pTag">Use this [page] to (detail) your site's privacy policy.</p>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        var pTag = document.getElementById("pTag");
+        var text = "to (detail) your site's";
+        
+        var specialCharacters = /[.*+?^${}()|[\]\\]/g; // Regular expression to match special characters
+        var modifiedText = text.replace(specialCharacters, "\\$&");
+
+        var regex = new RegExp(modifiedText, 'gi');
+
+        var match = regex.exec(pTag.innerHTML)
+        if (match) {
+            console.log(match[0]);
+        }
+
+        var keyword = "Search results";
+        var app_snippet = "that your page appears higher in search results, making it easier for potential customers to find";
+        var escapedKeyword = escapeRegExp(keyword);
+        var regexN = new RegExp(keyword, 'gi');
+        var matchN = regexN.exec(app_snippet);
+        if (matchN) {
+            console.log(keyword + ":--" + matchN);
+        }
+
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+
+        console.log(modifiedText);
+    </script>
+    
+}

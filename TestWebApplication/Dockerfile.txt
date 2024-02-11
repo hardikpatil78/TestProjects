@@ -1,0 +1,26 @@
+﻿# Use the official ASP.NET Core Runtime image as the base image
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+# Copy the published web project into the image
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["Wati.Interview.Test.Web/Wati.Interview.Test.Web.csproj", "Wati.Interview.Test.Web/"]
+RUN dotnet restore "Wati.Interview.Test.Web/Wati.Interview.Test.Web.csproj"
+COPY . .
+WORKDIR "/src/Wati.Interview.Test.Web"
+RUN dotnet build "Wati.Interview.Test.Web.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "Wati.Interview.Test.Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Use the base image and copy the published output from the build image
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Wati.Interview.Test.Web.dll"]
+
+#Run Container
+#docker run -p 8083:80 -d --name wati-web-app-container watiinterviewtest.web

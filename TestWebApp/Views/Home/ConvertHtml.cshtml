@@ -1,0 +1,48 @@
+﻿@using TestWebApp.Data;
+@model IEnumerable<GenerateHtml>;
+@{
+    ViewData["Title"] = "ConvertHtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Box with Textbox and Button</h5>
+                    <form method="post" action="/Home/ConvertHtml">
+                        <div class="form-group">
+                        <label for="textbox">Text:</label>
+                        <input type="text" class="form-control" name="GenerateUrl" id="textbox">
+                        </div>
+                        <div class="form-group">
+                            <label for="textbox">Keywords(Json):</label>
+                            <input type="text" class="form-control" name="keywordString" id="keywordString">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <table>
+        @if(Model != null)
+        {
+            foreach(var htmltext in Model)
+            {
+                <tr>
+                <td class="col-md-6">
+                    @htmltext.Text
+                </td>
+                <td class="col-md-6">
+                    @htmltext.HtmlText
+                </td>
+                    </tr>
+            }
+        }
+        </table>
+    </div>
+  </div>
+
